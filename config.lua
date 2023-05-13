@@ -1,10 +1,9 @@
 Config  = {}
 
 Config.ox_lib = false -- use ox_lib, if true don't forget to load ox_lib in resource manifest
-Config.tickupdate = 5 -- time to update the blips from server in seconds (performance matters)
-Config.playersupdate = 60 -- time to update/fetch players data from server in seconds (performance matters)
+Config.tickupdate = 1 -- time to update the blips from server in seconds (performance matters)
 
-Config.Sprite = {
+Config.Sprite = { -- blip sprite when player on vehicle based on vehicle class
     [0] = {sprite = 225},
     [1] = {sprite = 225},
     [2] = {sprite = 225},

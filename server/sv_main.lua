@@ -8,9 +8,9 @@ AddEventHandler("onResourceStart", function(resource)
     if GetCurrentResourceName() ~= resource then
         return
     end
-    players = ESX.GetExtendedPlayers()
-    for i = 1, #players do
-        local xPlayer = players[i]
+    local playerdata = ESX.GetExtendedPlayers()
+    for i = 1, #playerdata do
+        local xPlayer = playerdata[i]
         local heading = GetEntityHeading(GetPlayerPed(xPlayer.source))
         local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(xPlayer.source))
         local job = xPlayer.job.name
@@ -24,6 +24,8 @@ AddEventHandler("onResourceStart", function(resource)
                 color = Config.authorizedJob[xPlayer.job.name].color
             }
         end
+
+        players[xPlayer.source] = xPlayer
     end
 end)
 
@@ -61,6 +63,7 @@ AddEventHandler("esx:setJob", function(playerId, job, lastJob)
 	if not xPlayer then
 		return
 	end
+    players[playerId] = xPlayer
     local job = job.name
     local lastJob = lastJob.name
 	local heading = GetEntityHeading(GetPlayerPed(playerId))
@@ -123,10 +126,9 @@ CreateThread(function()
                 end
             end
         end
-        for i = 1, #players do
-            local xPlayer = players[i]
+        for id, xPlayer in pairs(players) do
             local data = {}
-            if GetPlayerName(xPlayer.source) then
+            if GetPlayerName(id) then
                 for job, table in pairs(Config.authorizedJob) do
                     if table.sharedjobs[xPlayer.job.name] then
                         for n = 1, #tableData[job] do
@@ -134,23 +136,17 @@ CreateThread(function()
                         end
                     end
                 end
-                TriggerClientEvent("send:blipData", xPlayer.source, data)
+                TriggerClientEvent("send:blipData", id, data)
             end
         end
 		Wait(Config.tickupdate * 1000)
     end
 end)
 
-CreateThread(function()
-	while true do
-        players = {}
-        local allplayers = GetPlayers()
-        for k, v in pairs(allplayers) do
-            local xPlayer = ESX.GetPlayerFromId(tostring(v))
-            if xPlayer then
-                players[#players+1] = xPlayer
-            end
-        end
-		Wait(Config.playersupdate * 1000)
-    end
+AddEventHandler("esx:playerLoaded", function(playerId, xPlayer, isNew)
+    players[playerId] = xPlayer
+end)
+
+AddEventHandler("esx:playerDropped", function(playerId)
+    players[playerId] = nil
 end)
