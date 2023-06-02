@@ -8,17 +8,20 @@ description "Blips display for job services."
 author "wibowo#7184"
 
 shared_scripts {
-    "@es_extended/imports.lua",
     -- "@ox_lib/init.lua"
 }
 
 shared_script "config.lua"
+
+client_script "bridge/**/client.lua"
+server_script "bridge/**/server.lua"
+
 client_script "**/cl_*.lua"
 
 server_script "@oxmysql/lib/MySQL.lua"
 server_script "**/sv_*.lua"
 
 dependencies {
-    "es_extended",
+    "oxmysql",
     -- "ox_lib", -- optional
 }
