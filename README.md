@@ -12,11 +12,12 @@ This resource provides blips on either pause menu map or minimap for job service
 Coming soon
 
 ## Framework
-- ESX
+- ESX/QBCore
 
 ## Requirement
-- ESX Legacy (recommended above v1.9.1)
-- ox_lib (optional), required if using ESX Legacy below 1.9.1
+- [ESX Legacy](https://github.com/esx-framework/esx_core) (recommended above v1.9.1) / [QBCore](https://github.com/qbcore-framework/qb-core)
+- [oxmysql](https://github.com/overextended/oxmysql)
+- [ox_lib](https://github.com/overextended/ox_lib) (optional), required if using ESX Legacy below v1.9.1
 
 # Legal
 
