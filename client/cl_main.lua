@@ -1,7 +1,8 @@
 local blips = {}
 local updated = {}
+local jobEvent = QBCore and "QBCore:Client:OnJobUpdate" or "esx:setJob"
 
-RegisterNetEvent("esx:setJob", function()
+RegisterNetEvent(jobEvent, function()
     for id, blip in pairs(blips) do
         if DoesBlipExist(blip) then
             RemoveBlip(blip)
@@ -35,6 +36,8 @@ RegisterNetEvent('send:blipData', function(data)
                     updated[prop.id] = true
                 else
                     local blip = blips[prop.id]
+                    local coords = prop.coords
+                    SetBlipCoords(blip, coords.x, coords.y, coords.z)
                     SetBlipSprite(blip, prop.sprite or 1)
                     ShowHeadingIndicatorOnBlip(blip, true)
                     SetBlipShowCone(blip, true) -- Player Blip indicator
@@ -179,6 +182,14 @@ if Config.ox_lib then
         end
 
         TriggerServerEvent("blips:inVehicle", true, Config.Sprite[GetVehicleClass(vehicle)].sprite)
+    end)
+elseif QBCore then
+    RegisterNetEvent('QBCore:Client:EnteredVehicle', function()
+        TriggerServerEvent("blips:inVehicle", true, Config.Sprite[GetVehicleClass(vehicle)].sprite)
+    end)
+
+    RegisterNetEvent('QBCore:Client:LeftVehicle', function()
+        TriggerServerEvent("blips:inVehicle", false)
     end)
 else
     AddEventHandler("esx:enteredVehicle", function(vehicle, plate, seat, displayName, netId)
