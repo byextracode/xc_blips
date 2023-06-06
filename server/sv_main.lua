@@ -16,11 +16,14 @@ AddEventHandler("playerDropped", function()
     end
 end)
 
-RegisterServerEvent("blips:inVehicle", function(state, sprite)
+RegisterServerEvent("blips:inVehicle", function(state, sprite, siren)
     local source = source
     for job, table in pairs(tableData) do
         for i = 1, #tableData[job] do
             if tableData[job][i] and tableData[job][i].id == source then
+                if siren and not Config.authorizedJob[job]?.siren then
+                    return
+                end
                 tableData[job][i].sprite = state and sprite or nil
                 return
             end

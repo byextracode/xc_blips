@@ -1,6 +1,8 @@
 local blips = {}
 local updated = {}
 local jobEvent = QBCore and "QBCore:Client:OnJobUpdate" or "esx:setJob"
+local currentVehicle = 0
+local isSirenOn = false
 
 RegisterNetEvent(jobEvent, function()
     for id, blip in pairs(blips) do
@@ -20,8 +22,6 @@ RegisterNetEvent('send:blipData', function(data)
                 if prop.sprite then
                     RemoveBlip(blips[prop.id])
                     local blip = AddBlipForEntity(ped)
-                    -- ShowHeadingIndicatorOnBlip(blip, true)
-                    -- SetBlipShowCone(blip, true) -- Player Blip indicator
                     SetBlipSprite(blip, prop.sprite or 1)
                     SetBlipRotation(blip, math.ceil(GetEntityHeading(ped)))
                     SetBlipColour(blip, prop.color)
@@ -35,27 +35,42 @@ RegisterNetEvent('send:blipData', function(data)
                     blips[prop.id] = blip
                     updated[prop.id] = true
                 else
-                    local blip = blips[prop.id]
-                    local coords = prop.coords
-                    SetBlipCoords(blip, coords.x, coords.y, coords.z)
-                    SetBlipSprite(blip, prop.sprite or 1)
-                    ShowHeadingIndicatorOnBlip(blip, true)
-                    SetBlipShowCone(blip, true) -- Player Blip indicator
-                    SetBlipRotation(blip, math.ceil(prop.heading))
-                    SetBlipColour(blip, prop.color)
-                    SetBlipScale(blip, 0.6)
-                    SetBlipShrink(blip, true)
-                    SetBlipPriority(blip, 100)
-                    BeginTextCommandSetBlipName("STRING");
-                    AddTextComponentString(prop.name);
-                    EndTextCommandSetBlipName(blip);
-                    updated[prop.id] = true
+                    local pedBlip = GetBlipFromEntity(ped)
+                    if DoesBlipExist(pedBlip) then
+                        local blip = blips[prop.id]
+                        local coords = prop.coords
+                        SetBlipSprite(blip, prop.sprite or 1)
+                        ShowHeadingIndicatorOnBlip(blip, true)
+                        SetBlipShowCone(blip, true) -- Player Blip indicator
+                        SetBlipRotation(blip, math.ceil(prop.heading))
+                        SetBlipColour(blip, prop.color)
+                        SetBlipScale(blip, 0.6)
+                        SetBlipShrink(blip, true)
+                        SetBlipPriority(blip, 100)
+                        BeginTextCommandSetBlipName("STRING");
+                        AddTextComponentString(prop.name);
+                        EndTextCommandSetBlipName(blip);
+                        updated[prop.id] = true
+                    else
+                        RemoveBlip(blips[prop.id])
+                        local blip = AddBlipForEntity(ped)
+                        SetBlipSprite(blip, prop.sprite or 1)
+                        ShowHeadingIndicatorOnBlip(blip, true)
+                        SetBlipShowCone(blip, true) -- Player Blip indicator
+                        SetBlipRotation(blip, math.ceil(prop.heading))
+                        SetBlipColour(blip, prop.color)
+                        SetBlipScale(blip, 0.6)
+                        SetBlipShrink(blip, true)
+                        SetBlipPriority(blip, 100)
+                        BeginTextCommandSetBlipName("STRING");
+                        AddTextComponentString(prop.name);
+                        EndTextCommandSetBlipName(blip);
+                        updated[prop.id] = true
+                    end
                 end
             else
                 if prop.sprite then
                     local blip = AddBlipForEntity(ped)
-                    -- ShowHeadingIndicatorOnBlip(blip, true)
-                    -- SetBlipShowCone(blip, true) -- Player Blip indicator
                     SetBlipSprite(blip, prop.sprite or 1)
                     SetBlipRotation(blip, math.ceil(GetEntityHeading(ped)))
                     SetBlipColour(blip, prop.color)
@@ -94,8 +109,6 @@ RegisterNetEvent('send:blipData', function(data)
                     local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
                     SetBlipSprite(blip, prop.sprite or 1)
                     SetBlipCoords(blip, coords.x, coords.y, coords.z)
-                    -- ShowHeadingIndicatorOnBlip(blip, true)
-                    -- SetBlipShowCone(blip, true) -- Player Blip indicator
                     SetBlipRotation(blip, math.ceil(prop.heading))
                     SetBlipColour(blip, prop.color)
                     SetBlipScale(blip, 0.6)
@@ -128,8 +141,6 @@ RegisterNetEvent('send:blipData', function(data)
                 if prop.sprite then
                     local coords = prop.coords
                     local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
-                    -- ShowHeadingIndicatorOnBlip(blip, true)
-                    -- SetBlipShowCone(blip, true) -- Player Blip indicator
                     SetBlipSprite(blip, prop.sprite or 1)
                     SetBlipRotation(blip, math.ceil(prop.heading))
                     SetBlipColour(blip, prop.color)
@@ -177,29 +188,57 @@ end)
 if Config.ox_lib then
     lib.onCache("vehicle", function(vehicle)
         if not vehicle then
+            currentVehicle = 0
+            isSirenOn = false
             TriggerServerEvent("blips:inVehicle", false)
             return
         end
 
-        TriggerServerEvent("blips:inVehicle", true, Config.Sprite[GetVehicleClass(vehicle)].sprite)
+        currentVehicle = vehicle
+        TriggerServerEvent("blips:inVehicle", true, Config.Sprite[GetVehicleClass(currentVehicle)].sprite)
     end)
 elseif QBCore then
-    RegisterNetEvent('QBCore:Client:EnteredVehicle', function()
-        TriggerServerEvent("blips:inVehicle", true, Config.Sprite[GetVehicleClass(vehicle)].sprite)
+    RegisterNetEvent('QBCore:Client:EnteredVehicle', function(data)
+        currentVehicle = data.vehicle
+        TriggerServerEvent("blips:inVehicle", true, Config.Sprite[GetVehicleClass(currentVehicle)].sprite)
     end)
 
-    RegisterNetEvent('QBCore:Client:LeftVehicle', function()
+    RegisterNetEvent('QBCore:Client:LeftVehicle', function(data)
+        currentVehicle = 0
+        isSirenOn = false
         TriggerServerEvent("blips:inVehicle", false)
     end)
 else
     AddEventHandler("esx:enteredVehicle", function(vehicle, plate, seat, displayName, netId)
-        TriggerServerEvent("blips:inVehicle", true, Config.Sprite[GetVehicleClass(vehicle)].sprite)
+        currentVehicle = vehicle
+        TriggerServerEvent("blips:inVehicle", true, Config.Sprite[GetVehicleClass(currentVehicle)].sprite)
     end)
 
     AddEventHandler("esx:exitedVehicle", function(vehicle, plate, seat, displayName, netId)
+        currentVehicle = 0
+        isSirenOn = false
         TriggerServerEvent("blips:inVehicle", false)
     end)
 end
+
+CreateThread(function()
+    while true do
+        if currentVehicle ~= 0 then
+            if IsVehicleSirenOn(currentVehicle) then
+                if not isSirenOn then
+                    isSirenOn = true
+                    TriggerServerEvent("blips:inVehicle", true, Config.SirenSprite, true)
+                end
+            else
+                if isSirenOn then
+                    isSirenOn = false
+                    TriggerServerEvent("blips:inVehicle", true, Config.Sprite[GetVehicleClass(currentVehicle)].sprite)
+                end
+            end
+        end
+        Wait(Config.sirenupdate * 1000)
+    end
+end)
 
 AddEventHandler("onClientResourceStart", function(resource)
     if GetCurrentResourceName() ~= resource then

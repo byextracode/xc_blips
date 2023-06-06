@@ -2,6 +2,7 @@ Config  = {}
 
 Config.ox_lib = false -- use ox_lib, if true don't forget to load ox_lib in resource manifest
 Config.tickupdate = 1 -- time to update the blips from server in seconds (performance matters)
+Config.sirenupdate = 1 -- time to update siren state (client) in seconds (performance matters)
 
 Config.Sprite = { -- blip sprite when player on vehicle based on vehicle class
     [0] = {sprite = 225},
@@ -28,14 +29,18 @@ Config.Sprite = { -- blip sprite when player on vehicle based on vehicle class
     [22] = {sprite = 1},
 }
 
+Config.SirenSprite = 42
+
 Config.authorizedJob = {
     police = {                  -- main job name
+        siren = true,           -- allow siren blip
         color = 26,             -- blip color id
         sharedjobs = {          -- job that authorized to see the current blips
             police = true,
         }
     },
     ambulance = {
+        siren = true,
         color = 1,
         sharedjobs = {
             ambulance = true,
