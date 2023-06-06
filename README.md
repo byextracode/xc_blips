@@ -1,15 +1,22 @@
 # xc_blips
 
 ## Description
-This resource provides blips on either pause menu map or minimap for job service. 
+This resource provides blips on either pause menu map or minimap for job service.
 
 ## Feature
 - Configurable blips sprite when on vehicle (categorized by vehicle class)
 - Configurable blips color
 - Shared job (authorized job to see other job blips)
 
-- Preview
-Coming soon
+## Preview
+- On foot
+![Preview 1](https://i.imgur.com/RDel3ez.png)
+
+- On vehicle
+![Preview 2](https://i.imgur.com/aLMN38R.png)
+
+- On vehicle with siren on
+![Preview 3](https://i.imgur.com/YMaDiB7.png)
 
 ## Framework
 - ESX/QBCore
