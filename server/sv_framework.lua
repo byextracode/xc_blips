@@ -22,7 +22,7 @@ if QBCore then
                     color = Config.authorizedJob[Player.job.name].color
                 }
             end
-    
+
             players[Player.PlayerData.source] = Player
         end
     end)
@@ -69,7 +69,7 @@ if QBCore then
         if not Player then
             return
         end
-        
+
         players[source] = Player
         local job = job.name
         local lastJob = lastJobs[source] or "unknown"
@@ -117,7 +117,7 @@ else
                     color = Config.authorizedJob[xPlayer.job.name].color
                 }
             end
-    
+
             players[xPlayer.source] = xPlayer
         end
     end)
@@ -162,7 +162,7 @@ else
         if not xPlayer then
             return
         end
-        
+
         players[playerId] = xPlayer
         local job = job.name
         local lastJob = lastJob.name
