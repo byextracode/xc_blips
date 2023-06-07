@@ -1,5 +1,7 @@
 Config  = {}
 
+Config.versionCheck = true -- check for updates
+
 Config.ox_lib = false -- use ox_lib, if true don't forget to load ox_lib in resource manifest
 Config.tickupdate = 1 -- time to update the blips from server in seconds (performance matters)
 Config.sirenupdate = 1 -- time to update siren state (client) in seconds (performance matters)
