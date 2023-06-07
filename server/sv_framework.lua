@@ -51,7 +51,7 @@ if QBCore then
         end
         tableData[job][#tableData[job]+1] = {
             id = playerId,
-            name = Player.PlayerData.job.grade.label .. " | " .. Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname,
+            name = Player.PlayerData.job.grade.name .. " | " .. Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname,
             coords = GetEntityCoords(GetPlayerPed(playerId)),
             heading = heading,
             net = net,
