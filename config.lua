@@ -32,6 +32,7 @@ Config.Sprite = { -- blip sprite when player on vehicle based on vehicle class
 }
 
 Config.SirenSprite = 42
+Config.EnableSelfBlip = true
 
 Config.authorizedJob = {
     police = {                  -- main job name

@@ -17,6 +17,9 @@ RegisterNetEvent('send:blipData', function(data)
     for i = 1, #data do
         local prop = data[i]
         local ped = NetworkDoesEntityExistWithNetworkId(prop.net) and NetworkGetEntityFromNetworkId(prop.net) or nil
+        if ped == PlayerPedId() and not Config.EnableSelfBlip then
+            goto skip
+        end
         if DoesEntityExist(ped) then
             if DoesBlipExist(blips[prop.id]) then
                 if prop.sprite then
@@ -173,6 +176,7 @@ RegisterNetEvent('send:blipData', function(data)
                 end
             end
         end
+        ::skip::
     end
 
     for id, blip in pairs(blips) do
