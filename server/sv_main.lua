@@ -49,7 +49,8 @@ CreateThread(function()
             local data = {}
             if GetPlayerName(id) then
                 for job, table in pairs(Config.authorizedJob) do
-                    if table.sharedjobs[xPlayer.job.name] then
+                    local jobName = QBCore and xPlayer.PlayerData.job.name or xPlayer.job.name
+                    if table.sharedjobs[jobName] then
                         for n = 1, #tableData[job] do
                             data[#data+1] = tableData[job][n]
                         end

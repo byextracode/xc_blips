@@ -11,15 +11,15 @@ if QBCore then
             local Player = playerdata[i]
             local heading = GetEntityHeading(GetPlayerPed(Player.PlayerData.source))
             local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(Player.PlayerData.source))
-            local job = Player.job.name
-            if isAuthorized(Player.job.name) then
+            local job = Player.PlayerData.job.name
+            if isAuthorized(Player.PlayerData.job.name) then
                 tableData[job][#tableData[job]+1] = {
                     id = Player.PlayerData.source,
-                    name = Player.job.grade.name .. " | " .. Player.name,
+                    name = Player.PlayerData.job.grade.name .. " | " .. Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname,
                     coords = GetEntityCoords(GetPlayerPed(Player.PlayerData.source)),
                     heading = heading,
                     net = net,
-                    color = Config.authorizedJob[Player.job.name].color
+                    color = Config.authorizedJob[Player.PlayerData.job.name].color
                 }
             end
 
@@ -35,7 +35,7 @@ if QBCore then
 
         players[Player.PlayerData.source] = Player
         local playerId = Player.PlayerData.source
-        local job = Player.job.name
+        local job = Player.PlayerData.job.name
         local lastJob = job
         local heading = GetEntityHeading(GetPlayerPed(playerId))
         local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(playerId))
@@ -51,7 +51,7 @@ if QBCore then
         end
         tableData[job][#tableData[job]+1] = {
             id = playerId,
-            name = Player.job.grade.label .. " | " .. Player.name,
+            name = Player.PlayerData.job.grade.label .. " | " .. Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname,
             coords = GetEntityCoords(GetPlayerPed(playerId)),
             heading = heading,
             net = net,
@@ -87,7 +87,7 @@ if QBCore then
         end
         tableData[job][#tableData[job]+1] = {
             id = source,
-            name = Player.job.grade.name .. " | " .. Player.name,
+            name = Player.PlayerData.job.grade.name .. " | " .. Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname,
             coords = GetEntityCoords(GetPlayerPed(source)),
             heading = heading,
             net = net,
