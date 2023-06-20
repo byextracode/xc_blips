@@ -3,7 +3,7 @@ lua54        "yes"
 game "gta5"
 
 name "xc_blips"
-version "2.0.0"
+version "2.0.1"
 description "Blips display for job services."
 author "wibowo#7184"
 
