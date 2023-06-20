@@ -57,9 +57,3 @@ Config.authorizedJob = {
         }
     },
 }
-
-tableData = { -- authorized job data, see Config.authorizedJob
-    police = {},
-    ambulance = {},
-    mechanic = {}
-}

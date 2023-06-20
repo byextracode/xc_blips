@@ -1,4 +1,9 @@
 players = {}
+tableData = {}
+
+for job, data in pairs(Config.authorizedJob) do
+    tableData[job] = {}
+end
 
 function isAuthorized(job)
     return Config.authorizedJob[job] ~= nil
