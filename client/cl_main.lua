@@ -50,6 +50,7 @@ RegisterNetEvent('send:blipData', function(data)
                         SetBlipScale(blip, 0.6)
                         SetBlipShrink(blip, true)
                         SetBlipPriority(blip, 100)
+                        SetBlipCategory(blip, 7)
                         BeginTextCommandSetBlipName("STRING");
                         AddTextComponentString(prop.name);
                         EndTextCommandSetBlipName(blip);
@@ -65,9 +66,11 @@ RegisterNetEvent('send:blipData', function(data)
                         SetBlipScale(blip, 0.6)
                         SetBlipShrink(blip, true)
                         SetBlipPriority(blip, 100)
+                        SetBlipCategory(blip, 7)
                         BeginTextCommandSetBlipName("STRING");
                         AddTextComponentString(prop.name);
                         EndTextCommandSetBlipName(blip);
+                        blips[prop.id] = blip
                         updated[prop.id] = true
                     end
                 end
@@ -117,6 +120,7 @@ RegisterNetEvent('send:blipData', function(data)
                     SetBlipScale(blip, 0.6)
                     SetBlipShrink(blip, true)
                     SetBlipPriority(blip, 100)
+                    SetBlipCategory(blip, 7)
                     BeginTextCommandSetBlipName("STRING");
                     AddTextComponentString(prop.name);
                     EndTextCommandSetBlipName(blip);
