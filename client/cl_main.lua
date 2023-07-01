@@ -16,6 +16,7 @@ end)
 RegisterNetEvent('send:blipData', function(data)
     for i = 1, #data do
         local prop = data[i]
+        prop.id = tostring(prop.id)
         local ped = NetworkDoesEntityExistWithNetworkId(prop.net) and NetworkGetEntityFromNetworkId(prop.net) or nil
         if ped == PlayerPedId() and not Config.EnableSelfBlip then
             goto skip
@@ -191,6 +192,8 @@ RegisterNetEvent('send:blipData', function(data)
             end
         end
     end
+
+    updated = {}
 end)
 
 if Config.ox_lib then
