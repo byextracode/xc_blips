@@ -39,10 +39,13 @@ if QBCore then
         local lastJob = job
         local heading = GetEntityHeading(GetPlayerPed(playerId))
         local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(playerId))
+        local data = tableData
         if isAuthorized(lastJob) then
-            for i = 1, #tableData[lastJob] do
-                if tableData[lastJob][i] and tableData[lastJob][i].id == playerId then
-                    tableData[lastJob][i] = nil
+            for i = 1, #data[lastJob] do
+                if data[lastJob][i] and data[lastJob][i].id == playerId then
+                    table.remove(data[lastJob], i)
+                    tableData = data
+                    break
                 end
             end
         end
@@ -75,10 +78,13 @@ if QBCore then
         local lastJob = lastJobs[source] or "unknown"
         local heading = GetEntityHeading(GetPlayerPed(source))
         local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(source))
+        local data = tableData
         if isAuthorized(lastJob) then
-            for i = 1, #tableData[lastJob] do
-                if tableData[lastJob][i] and tableData[lastJob][i].id == source then
-                    tableData[lastJob][i] = nil
+            for i = 1, #data[lastJob] do
+                if data[lastJob][i] and data[lastJob][i].id == source then
+                    table.remove(data[lastJob], i)
+                    tableData = data
+                    break
                 end
             end
         end
@@ -133,10 +139,13 @@ else
         local lastJob = job
         local heading = GetEntityHeading(GetPlayerPed(playerId))
         local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(playerId))
+        local data = tableData
         if isAuthorized(lastJob) then
-            for i = 1, #tableData[lastJob] do
-                if tableData[lastJob][i] and tableData[lastJob][i].id == playerId then
-                    tableData[lastJob][i] = nil
+            for i = 1, #data[lastJob] do
+                if data[lastJob][i] and data[lastJob][i].id == playerId then
+                    table.remove(data[lastJob], i)
+                    tableData = data
+                    break
                 end
             end
         end
@@ -168,10 +177,13 @@ else
         local lastJob = lastJob.name
         local heading = GetEntityHeading(GetPlayerPed(playerId))
         local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(playerId))
+        local data = tableData
         if isAuthorized(lastJob) then
-            for i = 1, #tableData[lastJob] do
-                if tableData[lastJob][i] and tableData[lastJob][i].id == playerId then
-                    tableData[lastJob][i] = nil
+            for i = 1, #data[lastJob] do
+                if data[lastJob][i] and data[lastJob][i].id == playerId then
+                    table.remove(data[lastJob], i)
+                    tableData = data
+                    break
                 end
             end
         end
