@@ -58,11 +58,11 @@ CreateThread(function()
             if GetPlayerName(id) then
                 for job, tables in pairs(Config.authorizedJob) do
                     local jobName = QBCore and xPlayer.PlayerData.job.name or xPlayer.job.name
-                    local playerCoord = GetEntityCoords(GetPlayerPed(id))
                     local authorized = tables.sharedjobs[jobName]
                     if authorized then
                         for n = 1, #data[job] do
                             if type(authorized) == "number" then
+                                local playerCoord = GetEntityCoords(GetPlayerPed(id))
                                 if #(playerCoord - data[job][n].coords) <= authorized then
                                     preparedData[#preparedData+1] = data[job][n]
                                 end
