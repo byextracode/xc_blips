@@ -54,6 +54,7 @@ Config.authorizedJob = {
         color = 31,
         sharedjobs = {
             mechanic = true,
+            police = 50.0, -- this means police job can also see mechanic blips within 50.0 radius
         }
     },
 }
