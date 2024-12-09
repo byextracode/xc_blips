@@ -6,7 +6,10 @@ for job, data in pairs(Config.authorizedJob) do
 end
 
 function isAuthorized(job)
-    return Config.authorizedJob[job] ~= nil
+    if QBCore then
+        return Config.authorizedJob[job.name] and job.onduty
+    end
+    return Config.authorizedJob[job.name] ~= nil
 end
 
 AddEventHandler("playerDropped", function()
@@ -59,7 +62,7 @@ CreateThread(function()
                 for job, tables in pairs(Config.authorizedJob) do
                     local jobName = QBCore and xPlayer.PlayerData.job.name or xPlayer.job.name
                     local authorized = tables.sharedjobs[jobName]
-                    if authorized then
+                    if authorized and (not QBCore and true or xPlayer.PlayerData.job.onduty) then
                         for n = 1, #data[job] do
                             if type(authorized) == "number" then
                                 local playerCoord = GetEntityCoords(GetPlayerPed(id))

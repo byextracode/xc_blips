@@ -11,15 +11,15 @@ if QBCore then
             local Player = playerdata[i]
             local heading = GetEntityHeading(GetPlayerPed(Player.PlayerData.source))
             local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(Player.PlayerData.source))
-            local job = Player.PlayerData.job.name
-            if isAuthorized(Player.PlayerData.job.name) then
-                tableData[job][#tableData[job]+1] = {
+            local job = Player.PlayerData.job
+            if isAuthorized(job) then
+                tableData[job.name][#tableData[job.name]+1] = {
                     id = Player.PlayerData.source,
                     name = Player.PlayerData.job.grade.name .. " | " .. Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname,
                     coords = GetEntityCoords(GetPlayerPed(Player.PlayerData.source)),
                     heading = heading,
                     net = net,
-                    color = Config.authorizedJob[Player.PlayerData.job.name].color
+                    color = Config.authorizedJob[job.name].color
                 }
             end
 
@@ -35,15 +35,15 @@ if QBCore then
 
         players[Player.PlayerData.source] = Player
         local playerId = Player.PlayerData.source
-        local job = Player.PlayerData.job.name
+        local job = Player.PlayerData.job
         local lastJob = job
         local heading = GetEntityHeading(GetPlayerPed(playerId))
         local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(playerId))
         local data = tableData
         if isAuthorized(lastJob) then
-            for i = 1, #data[lastJob] do
-                if data[lastJob][i] and data[lastJob][i].id == playerId then
-                    table.remove(data[lastJob], i)
+            for i = 1, #data[lastJob.name] do
+                if data[lastJob.name][i] and data[lastJob.name][i].id == playerId then
+                    table.remove(data[lastJob.name], i)
                     tableData = data
                     break
                 end
@@ -52,13 +52,13 @@ if QBCore then
         if not isAuthorized(job) then
             return
         end
-        tableData[job][#tableData[job]+1] = {
+        tableData[job.name][#tableData[job.name]+1] = {
             id = playerId,
             name = Player.PlayerData.job.grade.name .. " | " .. Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname,
             coords = GetEntityCoords(GetPlayerPed(playerId)),
             heading = heading,
             net = net,
-            color = Config.authorizedJob[job].color
+            color = Config.authorizedJob[job.name].color
         }
         lastJobs[playerId] = job
     end)
@@ -74,15 +74,15 @@ if QBCore then
         end
 
         players[source] = Player
-        local job = job.name
-        local lastJob = lastJobs[source] or "unknown"
+        local job = job
+        local lastJob = lastJobs[source] or {name = "unknown"}
         local heading = GetEntityHeading(GetPlayerPed(source))
         local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(source))
         local data = tableData
         if isAuthorized(lastJob) then
-            for i = 1, #data[lastJob] do
-                if data[lastJob][i] and data[lastJob][i].id == source then
-                    table.remove(data[lastJob], i)
+            for i = 1, #data[lastJob.name] do
+                if data[lastJob.name][i] and data[lastJob.name][i].id == source then
+                    table.remove(data[lastJob.name], i)
                     tableData = data
                     break
                 end
@@ -91,13 +91,13 @@ if QBCore then
         if not isAuthorized(job) then
             return
         end
-        tableData[job][#tableData[job]+1] = {
+        tableData[job.name][#tableData[job.name]+1] = {
             id = source,
             name = Player.PlayerData.job.grade.name .. " | " .. Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname,
             coords = GetEntityCoords(GetPlayerPed(source)),
             heading = heading,
             net = net,
-            color = Config.authorizedJob[job].color
+            color = Config.authorizedJob[job.name].color
         }
         lastJobs[source] = job
     end)
@@ -112,15 +112,15 @@ else
             local xPlayer = playerdata[i]
             local heading = GetEntityHeading(GetPlayerPed(xPlayer.source))
             local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(xPlayer.source))
-            local job = xPlayer.job.name
-            if isAuthorized(xPlayer.job.name) then
-                tableData[job][#tableData[job]+1] = {
+            local job = xPlayer.job
+            if isAuthorized(job) then
+                tableData[job.name][#tableData[job]+1] = {
                     id = xPlayer.source,
                     name = xPlayer.job.grade_label .. " | " .. xPlayer.name,
                     coords = xPlayer.getCoords(true),
                     heading = heading,
                     net = net,
-                    color = Config.authorizedJob[xPlayer.job.name].color
+                    color = Config.authorizedJob[job.name].color
                 }
             end
 
@@ -135,7 +135,7 @@ else
         end
 
         players[playerId] = xPlayer
-        local job = xPlayer.job.name
+        local job = xPlayer.job
         local lastJob = job
         local heading = GetEntityHeading(GetPlayerPed(playerId))
         local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(playerId))
@@ -152,13 +152,13 @@ else
         if not isAuthorized(job) then
             return
         end
-        tableData[job][#tableData[job]+1] = {
+        tableData[job.name][#tableData[job.name]+1] = {
             id = playerId,
             name = xPlayer.job.grade_label .. " | " .. xPlayer.name,
             coords = xPlayer.getCoords(true),
             heading = heading,
             net = net,
-            color = Config.authorizedJob[job].color
+            color = Config.authorizedJob[job.name].color
         }
     end)
 
@@ -173,15 +173,15 @@ else
         end
 
         players[playerId] = xPlayer
-        local job = job.name
-        local lastJob = lastJob.name
+        local job = job
+        local lastJob = lastJob
         local heading = GetEntityHeading(GetPlayerPed(playerId))
         local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(playerId))
         local data = tableData
         if isAuthorized(lastJob) then
-            for i = 1, #data[lastJob] do
-                if data[lastJob][i] and data[lastJob][i].id == playerId then
-                    table.remove(data[lastJob], i)
+            for i = 1, #data[lastJob.name] do
+                if data[lastJob.name][i] and data[lastJob.name][i].id == playerId then
+                    table.remove(data[lastJob.name], i)
                     tableData = data
                     break
                 end
@@ -190,13 +190,13 @@ else
         if not isAuthorized(job) then
             return
         end
-        tableData[job][#tableData[job]+1] = {
+        tableData[job.name][#tableData[job.name]+1] = {
             id = playerId,
             name = xPlayer.job.grade_label .. " | " .. xPlayer.name,
             coords = xPlayer.getCoords(true),
             heading = heading,
             net = net,
-            color = Config.authorizedJob[job].color
+            color = Config.authorizedJob[job.name].color
         }
     end)
 end
