@@ -1,3 +1,10 @@
+players = {}
+tableData = {}
+
+for job, data in pairs(Config.authorizedJob) do
+    tableData[job] = {}
+end
+
 if QBCore then
     lastJobs = {}
 
@@ -114,7 +121,7 @@ else
             local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(xPlayer.source))
             local job = xPlayer.job
             if isAuthorized(job) then
-                tableData[job.name][#tableData[job]+1] = {
+                tableData[job.name][#tableData[job.name]+1] = {
                     id = xPlayer.source,
                     name = xPlayer.job.grade_label .. " | " .. xPlayer.name,
                     coords = xPlayer.getCoords(true),
@@ -141,9 +148,9 @@ else
         local net = NetworkGetNetworkIdFromEntity(GetPlayerPed(playerId))
         local data = tableData
         if isAuthorized(lastJob) then
-            for i = 1, #data[lastJob] do
-                if data[lastJob][i] and data[lastJob][i].id == playerId then
-                    table.remove(data[lastJob], i)
+            for i = 1, #data[lastJob.name] do
+                if data[lastJob.name][i] and data[lastJob.name][i].id == playerId then
+                    table.remove(data[lastJob.name], i)
                     tableData = data
                     break
                 end

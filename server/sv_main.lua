@@ -1,10 +1,3 @@
-players = {}
-tableData = {}
-
-for job, data in pairs(Config.authorizedJob) do
-    tableData[job] = {}
-end
-
 function isAuthorized(job)
     if QBCore then
         return Config.authorizedJob[job.name] and job.onduty
@@ -75,7 +68,7 @@ CreateThread(function()
                         end
                     end
                 end
-                TriggerClientEvent("send:blipData", id, preparedData)
+                TriggerLatentClientEvent("send:blipData", id, 10000, preparedData)
             end
         end
 		Wait(Config.tickupdate * 1000)
